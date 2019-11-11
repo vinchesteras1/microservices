@@ -95,6 +95,6 @@ class db extends dbConfig
     }
 
     function freeRun($query)    {
-        return mysqli_fetch_assoc(mysqli_query($this -> connectionString,$query));
+        return mysqli_query($this -> connectionString,$query);
     }
 }
