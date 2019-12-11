@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CheckpointService
+namespace SettlementsService
 {
     public class Startup
     {
@@ -35,11 +35,12 @@ namespace CheckpointService
             {
                 app.UseDeveloperExceptionPage();
             }
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
