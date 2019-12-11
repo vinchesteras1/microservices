@@ -16,7 +16,7 @@ namespace SettlementsService.Controllers
     [ApiController]
     public class SettlementsController : ControllerBase
     {
-        public SettlementsController()
+       /* public SettlementsController()
         {
             var connectionFactory = new ConnectionFactory();
             var conf = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -26,9 +26,9 @@ namespace SettlementsService.Controllers
             channel.QueueDeclare("checkpoints", false, false, false);
             consumer = new EventingBasicConsumer(channel);
             consumer.Received += Received;
-        }
+        }*/
 
-        private void Received(object sender, BasicDeliverEventArgs e)
+       /* private void Received(object sender, BasicDeliverEventArgs e)
         {
             CheckpointInfo message = JsonSerializer.Deserialize<CheckpointInfo>(e.Body);
             StreamWriter writer = new StreamWriter("output.txt");
@@ -38,7 +38,7 @@ namespace SettlementsService.Controllers
         }
 
         private IModel channel;
-        private EventingBasicConsumer consumer;
+        private EventingBasicConsumer consumer;*/
 
         [HttpGet]
         public void Get()

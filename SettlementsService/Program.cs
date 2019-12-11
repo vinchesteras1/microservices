@@ -7,13 +7,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Text.Json;
+using SettlementsService.Models;
 namespace SettlementsService
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -24,27 +24,25 @@ namespace CheckpointService.Controllers
             conf.GetSection("rabbit").Bind(connectionFactory);
             var connection = connectionFactory.CreateConnection();
             channel = connection.CreateModel();
-            channel.QueueDeclare("checkpoints", false, false, false);
-            }
+            channel.QueueDeclare(queue: "checkpoints",
+                     durable: false,
+                     exclusive: false,
+                     autoDelete: false,
+                     arguments: null);
+        }
         private IModel channel;
 
         [HttpPost]
         [Route("CheckpointConnection/send")]
         public void send([FromBody]Models.CheckpointInfo content)
         {
-
             string jsonObj = JsonSerializer.Serialize<Models.CheckpointInfo>(content);
             var message = Encoding.UTF8.GetBytes(jsonObj);
             IBasicProperties props = channel.CreateBasicProperties();
             props.ContentType = "application/json";
-            channel.BasicPublish("", "checkpoints", props, message);
+            channel.BasicPublish("", "checkpoints", null, message);
         }
 
-        [HttpGet]
-        public void Get()
-        {
-
-        }
     }
 
 }

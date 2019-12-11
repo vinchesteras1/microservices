@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+
 namespace SettlementsService
 {
     public class Startup
@@ -26,6 +27,7 @@ namespace SettlementsService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<RabbitListener>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +37,7 @@ namespace SettlementsService
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseRabbitListener();
             
             app.UseHttpsRedirection();
 
@@ -46,6 +49,31 @@ namespace SettlementsService
             {
                 endpoints.MapControllers();
             });
+        }
+
+    }
+
+    public static class ApplicationBuilderExtentions
+    {
+        private static RabbitListener _listener { get; set; }
+
+        public static IApplicationBuilder UseRabbitListener(this IApplicationBuilder app)
+        {
+            _listener = app.ApplicationServices.GetService<RabbitListener>();
+            var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
+            lifetime.ApplicationStarted.Register(OnStarted);
+            lifetime.ApplicationStopping.Register(OnStopping);
+            return app;
+        }
+
+        private static void OnStarted()
+        {
+            _listener.Register();
+        }
+
+        private static void OnStopping()
+        {
+            _listener.Deregister();
         }
     }
 }
